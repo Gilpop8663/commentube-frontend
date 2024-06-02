@@ -22,14 +22,16 @@ const GET_LOCATIONS = gql`
 function App() {
   const [count, setCount] = useState(0);
 
-  const { loading, error, data } = useQuery(GET_LOCATIONS);
+  // const { loading, error, data } = useQuery(GET_LOCATIONS);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error : {error.message}</p>;
 
-  console.log(data);
+  // console.log(data);
 
-  return <div>안녕</div>;
+  return (
+    <div className="border w-12 b-12 border-b-2 border-b-red-500">안녕</div>
+  );
 }
 
 export default App;
