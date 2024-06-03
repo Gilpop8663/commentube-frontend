@@ -1,7 +1,7 @@
 export const MOCK_VIDEO_LIST = [
   {
     id: 3,
-    videoUrl: "hZmGdR35slS",
+    videoUrl: "3Hr35Kr2aXA",
     createdAt: "2024-05-31T18:13:03.373Z",
     updatedAt: "2024-06-01T11:09:32.348Z",
     likes: 6,
@@ -51,7 +51,7 @@ export const MOCK_VIDEO_LIST = [
   },
   {
     id: 1,
-    videoUrl: "https://www.youtube.com/watch?v=hZmGdR35lSo",
+    videoUrl: "6RQ-bBdASvk",
     createdAt: "2024-05-31T16:33:41.044Z",
     updatedAt: "2024-05-31T16:33:41.044Z",
     likes: 0,

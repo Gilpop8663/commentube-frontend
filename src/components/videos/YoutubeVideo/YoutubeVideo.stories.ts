@@ -3,7 +3,7 @@ import YoutubeVideo from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "YoutubeVideo",
+  title: "videos/YoutubeVideo",
   component: YoutubeVideo,
   parameters: {},
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs

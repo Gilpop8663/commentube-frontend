@@ -7,6 +7,9 @@ export default {
         roboto: ["Roboto", "sans-serif"],
         monoton: ["Monoton", "sans-serif"],
       },
+      backgroundColor: {
+        brand: "#f1f1f1",
+      },
     },
   },
   plugins: [],

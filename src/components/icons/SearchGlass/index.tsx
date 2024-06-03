@@ -1,16 +1,20 @@
 interface SearchGlassProps {
-  size?: number;
+  width?: number;
+  height?: number;
 }
 
-export default function SearchGlass({ size = 6 }: SearchGlassProps) {
+export default function SearchGlass({
+  width = 16,
+  height = 16,
+}: SearchGlassProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      width={50}
-      height={50}
+      width={width}
+      height={height}
       stroke="currentColor"
     >
       <path
