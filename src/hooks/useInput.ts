@@ -12,5 +12,9 @@ export const useFormInput = (initialValue: string = "") => {
     setValue(event.target.value);
   };
 
-  return { value, onChange };
+  const resetInputValue = () => {
+    setValue("");
+  };
+
+  return { value, onChange, resetInputValue };
 };

@@ -17,9 +17,8 @@ export default function PopularVideoList({ videoData }: PopularVideoListProps) {
           <span className="text-center">인기 비디오가 존재하지 않습니다</span>
         )}
         {videoData.map((item) => (
-          <Link to={`/videos/${item.id}`}>
+          <Link key={item.id} to={`/videos/${item.id}`}>
             <VideoItem
-              key={item.id}
               likes={item.likes}
               dislikes={item.dislikes}
               comments={item.comments.length}

@@ -1,30 +1,13 @@
-import { gql, useSuspenseQuery } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client";
 import { Video } from "../../types/video";
+import { GET_ALL_VIDEOS } from "../../gql/query";
 
-const GET_ALL_VIDEOS = gql`
-  query {
-    getAllVideos {
-      id
-      videoUrl
-      createdAt
-      updatedAt
-      likes
-      dislikes
-      comments {
-        id
-        content
-        nickname
-      }
-    }
-  }
-`;
-
-interface getAllVideoResponse {
+interface GetAllVideoResponse {
   getAllVideos: Video[];
 }
 
 export const usePopularVideo = () => {
-  const { data } = useSuspenseQuery<getAllVideoResponse>(GET_ALL_VIDEOS);
+  const { data } = useSuspenseQuery<GetAllVideoResponse>(GET_ALL_VIDEOS);
 
   return { data: data.getAllVideos };
 };

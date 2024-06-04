@@ -1,4 +1,9 @@
-export default function EmptyDislike() {
+interface Props {
+  width?: number;
+  height?: number;
+}
+
+export default function EmptyDislike({ width = 20, height = 20 }: Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,7 +11,8 @@ export default function EmptyDislike() {
       viewBox="0 0 24 24"
       strokeWidth={1}
       stroke="currentColor"
-      className="size-5"
+      width={width}
+      height={height}
     >
       <path
         strokeLinecap="round"

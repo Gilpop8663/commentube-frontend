@@ -1,4 +1,9 @@
-export default function BarThree() {
+interface BarThreeProps {
+  width?: number;
+  height?: number;
+}
+
+export default function BarThree({ width = 24, height = 24 }: BarThreeProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,7 +11,8 @@ export default function BarThree() {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="size-6"
+      height={height}
+      width={width}
     >
       <path
         strokeLinecap="round"

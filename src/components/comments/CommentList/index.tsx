@@ -1,4 +1,3 @@
-import React from "react";
 import { Comment } from "../../../types/comment";
 import CommentItem from "./CommentItem";
 

@@ -1,15 +1,6 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-
-const CREATE_VIDEO = gql`
-  mutation CreateVideo($inputs: CreateVideoInput!) {
-    createVideo(input: $inputs) {
-      ok
-      error
-      videoId
-    }
-  }
-`;
+import { CREATE_VIDEO } from "../../gql/mutation";
 
 interface CreateVideoResult {
   createVideo: {
@@ -26,7 +17,7 @@ export const useCreateVideo = () => {
 
   const handleCreateVideo = async (videoUrl: string) => {
     await createVideo({
-      variables: { inputs: { videoUrl } },
+      variables: { input: { videoUrl } },
     }).then((res) => {
       const videoId = res.data?.createVideo.videoId;
 
