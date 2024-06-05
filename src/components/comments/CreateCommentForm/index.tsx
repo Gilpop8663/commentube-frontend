@@ -39,7 +39,7 @@ export default function CreateCommentForm({
     : createReplyProps?.handleCloseClick;
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
+    <form onSubmit={handleSubmit}>
       <CommentInput
         type="text"
         placeholder={`${primaryWord} 추가...`}

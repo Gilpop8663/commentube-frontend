@@ -12,8 +12,11 @@ import { useEditComment } from "../../../hooks/mutation/useEditComment";
 import { useCheckCommentPassword } from "../../../hooks/mutation/useCheckCommentPassword";
 import EditCommentForm from "../EditCommentForm";
 import CreateCommentForm from "../CreateCommentForm";
+import { useEditReply } from "../../../hooks/mutation/useEditReply";
+import { useCheckReplyPassword } from "../../../hooks/mutation/useCheckReplyPassword";
 
 interface CommentBaseProps {
+  id: number;
   commentId: number;
   nickname: string;
   createdAt: string;
@@ -25,6 +28,7 @@ interface CommentBaseProps {
 }
 
 export default function CommentBase({
+  id,
   commentId,
   nickname,
   createdAt,
@@ -34,6 +38,7 @@ export default function CommentBase({
   content,
   replyType,
 }: CommentBaseProps) {
+  const isReply = replyType === "reply";
   const {
     isOpen: IsPasswordInputOpen,
     open: inputOpen,
@@ -44,13 +49,27 @@ export default function CommentBase({
     commentId,
     initialCommentValue: content,
   });
-  const {
-    isOpen: isEditInputOpen,
-    open: editInputOpen,
-    content: editContent,
-  } = editCommentProps;
+  const { isOpen: isEditCommentInputOpen, open: editCommentInputOpen } =
+    editCommentProps;
+
+  const editReplyProps = useEditReply({
+    commentId,
+    replyId: id,
+    initialCommentValue: content,
+  });
+
+  const { isOpen: isEditReplyOpen, open: editReplyInputOpen } = editReplyProps;
+
+  const isEditInputOpen = isReply ? isEditReplyOpen : isEditCommentInputOpen;
+  const editInputOpen = isReply ? editReplyInputOpen : editCommentInputOpen;
+
   const { handleCheckCommentPassword } = useCheckCommentPassword({
     commentId,
+    editInputOpen,
+  });
+
+  const { handleCheckReplyPassword } = useCheckReplyPassword({
+    replyId: id,
     editInputOpen,
   });
 
@@ -60,8 +79,6 @@ export default function CommentBase({
   const createReplyProps = useCreateReply(commentId);
 
   const { isOpen, toggleOpen } = createReplyProps;
-
-  const isReply = replyType === "reply";
 
   const handleWritingOption = (value: "edit" | "delete") => {
     setOption(value);
@@ -81,7 +98,12 @@ export default function CommentBase({
 
   const handleActionClick = () => {
     if (option === "edit") {
-      handleCheckCommentPassword(password.value);
+      if (isReply) {
+        handleCheckReplyPassword(password.value);
+      } else {
+        handleCheckCommentPassword(password.value);
+      }
+
       inputClose();
 
       return;
@@ -160,9 +182,9 @@ export default function CommentBase({
       )}
       {isEditInputOpen && (
         <EditCommentForm
-          commentType="comment"
-          {...editContent}
+          commentType={isReply ? "reply" : "comment"}
           editCommentProps={editCommentProps}
+          editReplyProps={editReplyProps}
           password={password.value}
         />
       )}

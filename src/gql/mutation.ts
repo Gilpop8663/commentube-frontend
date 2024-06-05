@@ -58,7 +58,7 @@ export const EDIT_COMMENT = gql`
 `;
 
 export const EDIT_REPLY = gql`
-  mutation ($input: EditReplyInput!, $replyId: Float!) {
+  mutation ($input: EditCommentInput!, $replyId: Float!) {
     editReply(input: $input, replyId: $replyId) {
       ok
       error
@@ -123,6 +123,15 @@ export const DISLIKE_REPLY = gql`
 export const CHECK_COMMENT_PASSWORD = gql`
   mutation ($commentId: Float!, $password: String!) {
     checkCommentPassword(commentId: $commentId, password: $password) {
+      ok
+      error
+    }
+  }
+`;
+
+export const CHECK_REPLY_PASSWORD = gql`
+  mutation ($replyId: Float!, $password: String!) {
+    checkReplyPassword(replyId: $replyId, password: $password) {
       ok
       error
     }

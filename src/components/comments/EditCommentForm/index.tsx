@@ -1,12 +1,12 @@
-import { UseCreateReplyResult } from "../../../hooks/mutation/useCreateReply";
 import { UseEditCommentResult } from "../../../hooks/mutation/useEditComment";
+import { UseEditReplyResult } from "../../../hooks/mutation/useEditReply";
 import Button from "../../Button";
 import CommentInput from "../CommentInput";
 
 interface EditCommentFormProps {
   commentType: "comment" | "reply";
   editCommentProps?: UseEditCommentResult;
-  editReplyProps?: UseCreateReplyResult;
+  editReplyProps?: UseEditReplyResult;
   password: string;
 }
 
@@ -25,11 +25,11 @@ export default function EditCommentForm({
 
   const handleSubmit = isComment
     ? editCommentProps?.handleEditComment
-    : editReplyProps?.handleCreateReply;
+    : editReplyProps?.handelEditReply;
 
   const handleClose = isComment
     ? editCommentProps?.close
-    : editReplyProps?.handleCloseClick;
+    : editReplyProps?.close;
 
   if (!handleSubmit) return;
 
