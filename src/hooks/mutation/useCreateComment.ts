@@ -23,6 +23,7 @@ export interface UseCreateCommentResult {
   content: UseFormInputResult;
   nickname: UseFormInputResult;
   password: UseFormInputResult;
+  handleCloseClick: () => void;
 }
 
 export const useCreateComment = (): UseCreateCommentResult => {
@@ -83,5 +84,17 @@ export const useCreateComment = (): UseCreateCommentResult => {
     content.resetInputValue();
   };
 
-  return { handleCreateComment, data, error, content, nickname, password };
+  const handleCloseClick = () => {
+    content.resetInputValue();
+  };
+
+  return {
+    handleCreateComment,
+    data,
+    error,
+    content,
+    nickname,
+    password,
+    handleCloseClick,
+  };
 };

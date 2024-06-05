@@ -3,7 +3,7 @@ import CommentBase from "../../CommentBase";
 import ReplyButton from "../../ReplyButton";
 import ReplyList from "../../ReplyList";
 import { useDeleteComment } from "../../../../hooks/mutation/useDeleteComment";
-import { useCreateReply } from "../../../../hooks/mutation/useCreateReply";
+import useOpen from "../../../../hooks/useOpen";
 
 interface CommentItemProps {
   id: number;
@@ -18,14 +18,15 @@ interface CommentItemProps {
 
 export default function CommentItem(commentData: CommentItemProps) {
   const { handleDeleteComment } = useDeleteComment(commentData.id);
-  const createReplyProps = useCreateReply(commentData.id);
-  const { isOpen, toggleOpen } = createReplyProps;
+
+  const { isOpen, toggleOpen } = useOpen();
 
   return (
     <div>
       <CommentBase
+        commentId={commentData.id}
+        replyType="comment"
         {...commentData}
-        createReplyProps={createReplyProps}
         handleDeleteComment={handleDeleteComment}
       />
       {commentData.replies.length > 0 && (
@@ -36,7 +37,9 @@ export default function CommentItem(commentData: CommentItemProps) {
         />
       )}
       <div className="relative pl-12 mt-2">
-        {isOpen && <ReplyList replies={commentData.replies} />}
+        {isOpen && (
+          <ReplyList replies={commentData.replies} commentId={commentData.id} />
+        )}
       </div>
     </div>
   );

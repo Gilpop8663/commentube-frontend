@@ -26,10 +26,11 @@ export interface UseCreateReplyResult {
   password: UseFormInputResult;
   isOpen: boolean;
   toggleOpen: () => void;
+  handleCloseClick: () => void;
 }
 
 export const useCreateReply = (commentId: number): UseCreateReplyResult => {
-  const { isOpen, toggleOpen, open } = useOpen();
+  const { isOpen, toggleOpen, close } = useOpen();
   const { videoId } = useGetVideoId();
   const content = useFormInput();
   const nickname = useFormInput();
@@ -92,11 +93,17 @@ export const useCreateReply = (commentId: number): UseCreateReplyResult => {
     });
 
     content.resetInputValue();
-    open();
+    close();
+  };
+
+  const handleCloseClick = () => {
+    content.resetInputValue();
+    close();
   };
 
   return {
     handleCreateReply,
+    handleCloseClick,
     data,
     error,
     content,

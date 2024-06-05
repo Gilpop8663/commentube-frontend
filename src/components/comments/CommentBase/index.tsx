@@ -1,5 +1,4 @@
-import { UseCreateReplyResult } from "../../../hooks/mutation/useCreateReply";
-import useOpen from "../../../hooks/useOpen";
+import { useCreateReply } from "../../../hooks/mutation/useCreateReply";
 import Button from "../../Button";
 import EmptyDislike from "../../icons/EmptyDislike";
 import EmptyLike from "../../icons/EmptyLike";
@@ -7,17 +6,19 @@ import CommentForm from "../CommentForm";
 import CommentWritingOption from "./CommentWritingOption";
 
 interface CommentBaseProps {
+  commentId: number;
   nickname: string;
   createdAt: string;
   updatedAt: string;
   likes: number;
   dislikes: number;
   content: string;
-  handleDeleteComment: (isIncrement: boolean) => void;
-  createReplyProps: UseCreateReplyResult;
+  handleDeleteComment?: (isIncrement: boolean) => void;
+  replyType: "comment" | "reply";
 }
 
 export default function CommentBase({
+  commentId,
   nickname,
   createdAt,
   updatedAt,
@@ -25,11 +26,22 @@ export default function CommentBase({
   dislikes,
   content,
   handleDeleteComment,
-  createReplyProps,
+  replyType,
 }: CommentBaseProps) {
   const isModified = createdAt !== updatedAt;
+  const createReplyProps = useCreateReply(commentId);
 
-  const { isOpen, toggleOpen } = useOpen();
+  const { isOpen, toggleOpen } = createReplyProps;
+
+  const isReply = replyType === "reply";
+
+  const toggleReplyOpen = () => {
+    if (isReply) {
+      createReplyProps.content.setValue(`@${nickname} `);
+    }
+
+    toggleOpen();
+  };
 
   return (
     <div>
@@ -58,7 +70,7 @@ export default function CommentBase({
           </Button>
           <span className="text-[#9A9A9A]">{dislikes}</span>
         </div>
-        <Button isPrimary={false} onClick={toggleOpen}>
+        <Button isPrimary={false} onClick={toggleReplyOpen}>
           답글
         </Button>
       </div>

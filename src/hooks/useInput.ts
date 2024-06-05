@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 export interface UseFormInputResult {
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  setValue: (value: string) => void;
 }
 
 export const useFormInput = (initialValue: string = "") => {
@@ -16,5 +17,5 @@ export const useFormInput = (initialValue: string = "") => {
     setValue("");
   };
 
-  return { value, onChange, resetInputValue };
+  return { value, onChange, resetInputValue, setValue };
 };
