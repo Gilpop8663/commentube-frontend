@@ -1,13 +1,9 @@
 import VideoDetail from "../components/videos/VideoDetail";
 import { useVideoDetail } from "../hooks/query/useVideoDetail";
+import { useGetVideoId } from "../hooks/useGetVideoId";
 
-interface VideoDetailFetcherProps {
-  videoId: number;
-}
-
-export default function VideoDetailFetcher({
-  videoId,
-}: VideoDetailFetcherProps) {
+export default function VideoDetailFetcher() {
+  const { videoId } = useGetVideoId();
   const { data } = useVideoDetail(videoId);
 
   return <VideoDetail videoData={data} />;

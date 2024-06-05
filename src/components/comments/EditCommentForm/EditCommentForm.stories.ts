@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import CommentForm from ".";
+import EditCommentForm from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Comment/CommentForm",
-  component: CommentForm,
+  title: "Comment/EditCommentForm",
+  component: EditCommentForm,
   parameters: {},
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
@@ -12,7 +12,7 @@ const meta = {
   argTypes: {},
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: {},
-} satisfies Meta<typeof CommentForm>;
+} satisfies Meta<typeof EditCommentForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

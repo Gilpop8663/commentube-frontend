@@ -119,3 +119,12 @@ export const DISLIKE_REPLY = gql`
     }
   }
 `;
+
+export const CHECK_COMMENT_PASSWORD = gql`
+  mutation ($commentId: Float!, $password: String!) {
+    checkCommentPassword(commentId: $commentId, password: $password) {
+      ok
+      error
+    }
+  }
+`;

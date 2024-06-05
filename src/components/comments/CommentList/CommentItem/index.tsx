@@ -2,7 +2,6 @@ import { Reply } from "../../../../types/comment";
 import CommentBase from "../../CommentBase";
 import ReplyButton from "../../ReplyButton";
 import ReplyList from "../../ReplyList";
-import { useDeleteComment } from "../../../../hooks/mutation/useDeleteComment";
 import useOpen from "../../../../hooks/useOpen";
 
 interface CommentItemProps {
@@ -17,8 +16,6 @@ interface CommentItemProps {
 }
 
 export default function CommentItem(commentData: CommentItemProps) {
-  const { handleDeleteComment } = useDeleteComment(commentData.id);
-
   const { isOpen, toggleOpen } = useOpen();
 
   return (
@@ -27,7 +24,6 @@ export default function CommentItem(commentData: CommentItemProps) {
         commentId={commentData.id}
         replyType="comment"
         {...commentData}
-        handleDeleteComment={handleDeleteComment}
       />
       {commentData.replies.length > 0 && (
         <ReplyButton

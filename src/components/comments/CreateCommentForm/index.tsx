@@ -4,17 +4,17 @@ import Button from "../../Button";
 import Input from "../../Input";
 import CommentInput from "../CommentInput";
 
-interface CommentFormProps {
+interface CreateCommentFormProps {
   commentType: "comment" | "reply";
   createCommentProps?: UseCreateCommentResult;
   createReplyProps?: UseCreateReplyResult;
 }
 
-export default function CommentForm({
+export default function CreateCommentForm({
   commentType,
   createCommentProps,
   createReplyProps,
-}: CommentFormProps) {
+}: CreateCommentFormProps) {
   const isComment = commentType === "comment";
   const primaryWord = isComment ? "댓글" : "답글";
 
@@ -39,7 +39,7 @@ export default function CommentForm({
     : createReplyProps?.handleCloseClick;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <CommentInput
         type="text"
         placeholder={`${primaryWord} 추가...`}

@@ -1,8 +1,8 @@
 import { useCreateComment } from "../../../hooks/mutation/useCreateComment";
 import { Comment } from "../../../types/comment";
 import CommentSortingOption from "../CommentBase/CommentSotingOption";
-import CommentForm from "../CommentForm";
 import CommentList from "../CommentList";
+import CreateCommentForm from "../CreateCommentForm";
 
 interface CommentDetailProps {
   commentData: Comment[];
@@ -18,7 +18,7 @@ export default function CommentDetail({ commentData }: CommentDetailProps) {
         <CommentSortingOption />
       </div>
       <div className="py-8">
-        <CommentForm
+        <CreateCommentForm
           commentType="comment"
           createCommentProps={createCommentProps}
         />

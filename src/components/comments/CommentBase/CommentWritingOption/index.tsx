@@ -5,13 +5,30 @@ import EditPencil from "../../../icons/EditPencil";
 import EllipsisVertical from "../../../icons/EllipsisVertical";
 
 interface CommentWritingOptionProps {
-  handleDeleteComment: (isIncrement: boolean) => void;
+  inputOpen: () => void;
+  inputClose: () => void;
+  handleWritingOption: (value: "edit" | "delete") => void;
 }
 
 export default function CommentWritingOption({
-  handleDeleteComment,
+  inputOpen,
+  inputClose,
+  handleWritingOption,
 }: CommentWritingOptionProps) {
-  const { togglePopup, isOpen, popupRef } = usePopup<HTMLDivElement>();
+  const { togglePopup, isOpen, popupRef, closePopup } =
+    usePopup<HTMLDivElement>();
+
+  const handleEditClick = () => {
+    inputOpen();
+    handleWritingOption("edit");
+    closePopup();
+  };
+
+  const handleDeleteClick = () => {
+    inputOpen();
+    handleWritingOption("delete");
+    closePopup();
+  };
 
   return (
     <div className="relative w-fit" ref={popupRef}>
@@ -20,12 +37,15 @@ export default function CommentWritingOption({
       </Button>
       {isOpen && (
         <div className="absolute py-2 -bottom-[100px] flex flex-col border w-36 bg-white z-10">
-          <button className="flex w-full px-4 py-2 bg-none hover:bg-[#e5e5e5] active:bg-[#cecece]">
+          <button
+            onClick={handleEditClick}
+            className="flex w-full px-4 py-2 bg-none hover:bg-[#e5e5e5] active:bg-[#cecece]"
+          >
             <EditPencil />
             <span className="ml-4">수정하기</span>
           </button>
           <button
-            onClick={() => handleDeleteComment(true)}
+            onClick={handleDeleteClick}
             className="flex w-full px-4 py-2 bg-none hover:bg-[#e5e5e5] active:bg-[#cecece]"
           >
             <DeleteTrash />
