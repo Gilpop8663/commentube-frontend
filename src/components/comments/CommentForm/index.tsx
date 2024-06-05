@@ -1,24 +1,41 @@
 import { UseCreateCommentResult } from "../../../hooks/mutation/useCreateComment";
+import { UseCreateReplyResult } from "../../../hooks/mutation/useCreateReply";
 import Button from "../../Button";
 import Input from "../../Input";
 import CommentInput from "../CommentInput";
 
 interface CommentFormProps {
   commentType: "comment" | "reply";
-  createCommentProps: UseCreateCommentResult;
+  createCommentProps?: UseCreateCommentResult;
+  createReplyProps?: UseCreateReplyResult;
 }
 
 export default function CommentForm({
   commentType,
   createCommentProps,
+  createReplyProps,
 }: CommentFormProps) {
-  const primaryWord = commentType === "comment" ? "댓글" : "답글";
+  const isComment = commentType === "comment";
+  const primaryWord = isComment ? "댓글" : "답글";
 
-  const { content, handleCreateComment, nickname, password } =
-    createCommentProps;
+  const content = isComment
+    ? createCommentProps?.content
+    : createReplyProps?.content;
+
+  const handleSubmit = isComment
+    ? createCommentProps?.handleCreateComment
+    : createReplyProps?.handleCreateReply;
+
+  const nickname = isComment
+    ? createCommentProps?.nickname
+    : createReplyProps?.nickname;
+
+  const password = isComment
+    ? createCommentProps?.password
+    : createReplyProps?.password;
 
   return (
-    <form onSubmit={handleCreateComment}>
+    <form onSubmit={handleSubmit}>
       <CommentInput
         type="text"
         placeholder={`${primaryWord} 추가...`}

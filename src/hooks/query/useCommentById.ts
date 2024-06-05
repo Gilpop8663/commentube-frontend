@@ -1,27 +1,26 @@
-import { useSuspenseQuery } from "@apollo/client";
-import { useState } from "react";
+import { useReactiveVar, useSuspenseQuery } from "@apollo/client";
 import { Comment } from "../../types/comment";
 import { GET_COMMENT_BY_ID } from "../../gql/query";
+import { sortOrderVar } from "../../contexts/sortingType";
+import { useParams } from "react-router-dom";
+import { useGetVideoId } from "../useGetVideoId";
 
-interface GetCommentsByVideoId {
+export interface GetCommentsByVideoId {
   getCommentsByVideoId: Comment[];
 }
 
-type SortingType = "popular" | "newest";
+export type SortingType = "popular" | "newest";
 
-export const useCommentById = (videoId: number) => {
-  const [sortingType, setSortingType] = useState<SortingType>("popular");
+export const useCommentById = () => {
+  const { videoId } = useGetVideoId();
+
+  const sortingType = useReactiveVar(sortOrderVar);
   const { data } = useSuspenseQuery<GetCommentsByVideoId>(GET_COMMENT_BY_ID, {
     variables: { videoId, sortingType },
   });
 
-  const handleSortingOptionChange = (value: SortingType) => {
-    setSortingType(value);
-  };
-
   return {
     data: data.getCommentsByVideoId,
     sortingOption: sortingType,
-    handleSortingOptionChange,
   };
 };

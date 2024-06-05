@@ -1,3 +1,4 @@
+import { UseCreateReplyResult } from "../../../hooks/mutation/useCreateReply";
 import useOpen from "../../../hooks/useOpen";
 import Button from "../../Button";
 import EmptyDislike from "../../icons/EmptyDislike";
@@ -12,6 +13,8 @@ interface CommentBaseProps {
   likes: number;
   dislikes: number;
   content: string;
+  handleDeleteComment: (isIncrement: boolean) => void;
+  createReplyProps: UseCreateReplyResult;
 }
 
 export default function CommentBase({
@@ -21,6 +24,8 @@ export default function CommentBase({
   likes,
   dislikes,
   content,
+  handleDeleteComment,
+  createReplyProps,
 }: CommentBaseProps) {
   const isModified = createdAt !== updatedAt;
 
@@ -38,7 +43,7 @@ export default function CommentBase({
         <span className="text-[#575757] text-base mt-0.5 whitespace-pre">
           {content}
         </span>
-        <CommentWritingOption />
+        <CommentWritingOption handleDeleteComment={handleDeleteComment} />
       </div>
       <div className="flex space-x-2 mt-1 items-center">
         <div className="flex text-sm items-center">
@@ -59,7 +64,10 @@ export default function CommentBase({
       </div>
       {isOpen && (
         <div className="pl-4 pr-8">
-          <CommentForm commentType="reply" />
+          <CommentForm
+            commentType="reply"
+            createReplyProps={createReplyProps}
+          />
         </div>
       )}
     </div>
