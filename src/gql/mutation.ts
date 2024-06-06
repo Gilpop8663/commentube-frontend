@@ -103,8 +103,8 @@ export const DISLIKE_COMMENT = gql`
 `;
 
 export const LIKE_REPLY = gql`
-  mutation ($reply: Float!, $isIncrement: Boolean!) {
-    likeReply(reply: $reply, isIncrement: $isIncrement) {
+  mutation ($replyId: Float!, $isIncrement: Boolean!) {
+    likeReply(replyId: $replyId, isIncrement: $isIncrement) {
       ok
       error
     }
@@ -112,8 +112,8 @@ export const LIKE_REPLY = gql`
 `;
 
 export const DISLIKE_REPLY = gql`
-  mutation ($reply: Float!, $isIncrement: Boolean!) {
-    dislikeReply(reply: $reply, isIncrement: $isIncrement) {
+  mutation ($replyId: Float!, $isIncrement: Boolean!) {
+    dislikeReply(replyId: $replyId, isIncrement: $isIncrement) {
       ok
       error
     }

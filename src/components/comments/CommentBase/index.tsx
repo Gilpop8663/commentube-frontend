@@ -15,6 +15,10 @@ import CreateCommentForm from "../CreateCommentForm";
 import { useEditReply } from "../../../hooks/mutation/useEditReply";
 import { useCheckReplyPassword } from "../../../hooks/mutation/useCheckReplyPassword";
 import { useDeleteReply } from "../../../hooks/mutation/useDeleteReply";
+import { useLikeComment } from "../../../hooks/mutation/useLikeComment";
+import { useDislikeComment } from "../../../hooks/mutation/useDislikeComment";
+import { useLikeReply } from "../../../hooks/mutation/useLikeReply";
+import { useDislikeReply } from "../../../hooks/mutation/useDislikeReply";
 
 interface CommentBaseProps {
   id: number;
@@ -40,6 +44,16 @@ export default function CommentBase({
   replyType,
 }: CommentBaseProps) {
   const isReply = replyType === "reply";
+  const { handleLikeComment } = useLikeComment(commentId);
+  const { handleDislikeComment } = useDislikeComment(commentId);
+  const { handleLikeReply } = useLikeReply({ commentId, replyId: id });
+  const { handleDislikeReply } = useDislikeReply({ commentId, replyId: id });
+
+  const handleLikeClick = isReply ? handleLikeReply : handleLikeComment;
+  const handleDislikeClick = isReply
+    ? handleDislikeReply
+    : handleDislikeComment;
+
   const {
     isOpen: IsPasswordInputOpen,
     open: inputOpen,
@@ -161,13 +175,16 @@ export default function CommentBase({
           </div>
           <div className="flex space-x-2 mt-1 items-center">
             <div className="flex text-sm items-center">
-              <Button isPrimary={false}>
+              <Button onClick={() => handleLikeClick(true)} isPrimary={false}>
                 <EmptyLike width={16} height={16} />
               </Button>
               <span className="text-[#9A9A9A]">{likes}</span>
             </div>
             <div className="flex text-sm items-center">
-              <Button isPrimary={false}>
+              <Button
+                onClick={() => handleDislikeClick(true)}
+                isPrimary={false}
+              >
                 <EmptyDislike width={16} height={16} />
               </Button>
               <span className="text-[#9A9A9A]">{dislikes}</span>
