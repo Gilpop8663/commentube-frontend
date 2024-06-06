@@ -14,6 +14,7 @@ import EditCommentForm from "../EditCommentForm";
 import CreateCommentForm from "../CreateCommentForm";
 import { useEditReply } from "../../../hooks/mutation/useEditReply";
 import { useCheckReplyPassword } from "../../../hooks/mutation/useCheckReplyPassword";
+import { useDeleteReply } from "../../../hooks/mutation/useDeleteReply";
 
 interface CommentBaseProps {
   id: number;
@@ -45,6 +46,7 @@ export default function CommentBase({
     close: inputClose,
   } = useOpen();
   const { handleDeleteComment } = useDeleteComment(commentId);
+  const { handleDeleteReply } = useDeleteReply({ commentId, replyId: id });
   const editCommentProps = useEditComment({
     commentId,
     initialCommentValue: content,
@@ -105,12 +107,17 @@ export default function CommentBase({
       }
 
       inputClose();
-
-      return;
     }
 
-    handleDeleteComment(password.value);
-    inputClose();
+    if (option === "delete") {
+      if (isReply) {
+        handleDeleteReply(password.value);
+      } else {
+        handleDeleteComment(password.value);
+      }
+
+      inputClose();
+    }
   };
 
   return (

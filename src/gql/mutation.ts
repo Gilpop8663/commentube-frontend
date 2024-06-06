@@ -40,7 +40,7 @@ export const DELETE_COMMENT = gql`
 `;
 
 export const DELETE_REPLY = gql`
-  mutation ($input: DeleteReplyInput!, $replyId: Float!) {
+  mutation ($input: DeleteCommentInput!, $replyId: Float!) {
     deleteReply(input: $input, replyId: $replyId) {
       ok
       error
