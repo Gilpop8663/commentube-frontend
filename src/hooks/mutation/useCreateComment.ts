@@ -29,8 +29,8 @@ export interface UseCreateCommentResult {
 export const useCreateComment = (): UseCreateCommentResult => {
   const { videoId } = useGetVideoId();
   const content = useFormInput();
-  const nickname = useFormInput();
-  const password = useFormInput();
+  const nickname = useFormInput(localStorage.getItem("nickname") || "");
+  const password = useFormInput(localStorage.getItem("password") || "");
   const sortingType = useReactiveVar(sortOrderVar);
 
   const [createComment, { data, error }] =
@@ -80,6 +80,9 @@ export const useCreateComment = (): UseCreateCommentResult => {
         );
       },
     });
+
+    localStorage.setItem("nickname", nickname.value);
+    localStorage.setItem("password", password.value);
 
     content.resetInputValue();
   };

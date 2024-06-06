@@ -33,8 +33,8 @@ export const useCreateReply = (commentId: number): UseCreateReplyResult => {
   const { isOpen, toggleOpen, close } = useOpen();
   const { videoId } = useGetVideoId();
   const content = useFormInput();
-  const nickname = useFormInput();
-  const password = useFormInput();
+  const nickname = useFormInput(localStorage.getItem("nickname") || "");
+  const password = useFormInput(localStorage.getItem("password") || "");
   const sortingType = useReactiveVar(sortOrderVar);
 
   const [createReply, { data, error }] =
@@ -91,6 +91,9 @@ export const useCreateReply = (commentId: number): UseCreateReplyResult => {
         );
       },
     });
+
+    localStorage.setItem("nickname", nickname.value);
+    localStorage.setItem("password", password.value);
 
     content.resetInputValue();
     close();
