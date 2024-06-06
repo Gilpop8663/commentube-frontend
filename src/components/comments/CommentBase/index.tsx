@@ -19,6 +19,8 @@ import { useLikeComment } from "../../../hooks/mutation/useLikeComment";
 import { useDislikeComment } from "../../../hooks/mutation/useDislikeComment";
 import { useLikeReply } from "../../../hooks/mutation/useLikeReply";
 import { useDislikeReply } from "../../../hooks/mutation/useDislikeReply";
+import FillLike from "../../icons/FillLike";
+import FillDislike from "../../icons/FillDislike";
 
 interface CommentBaseProps {
   id: number;
@@ -44,10 +46,20 @@ export default function CommentBase({
   replyType,
 }: CommentBaseProps) {
   const isReply = replyType === "reply";
-  const { handleLikeComment } = useLikeComment(commentId);
-  const { handleDislikeComment } = useDislikeComment(commentId);
-  const { handleLikeReply } = useLikeReply({ commentId, replyId: id });
-  const { handleDislikeReply } = useDislikeReply({ commentId, replyId: id });
+  const { handleLikeComment, liked: commentLiked } = useLikeComment(commentId);
+  const { handleDislikeComment, disliked: commentDisliked } =
+    useDislikeComment(commentId);
+  const { handleLikeReply, liked: replyLiked } = useLikeReply({
+    commentId,
+    replyId: id,
+  });
+  const { handleDislikeReply, disliked: replyDisliked } = useDislikeReply({
+    commentId,
+    replyId: id,
+  });
+
+  const liked = isReply ? replyLiked : commentLiked;
+  const disliked = isReply ? replyDisliked : commentDisliked;
 
   const handleLikeClick = isReply ? handleLikeReply : handleLikeComment;
   const handleDislikeClick = isReply
@@ -175,17 +187,22 @@ export default function CommentBase({
           </div>
           <div className="flex space-x-2 mt-1 items-center">
             <div className="flex text-sm items-center">
-              <Button onClick={() => handleLikeClick(true)} isPrimary={false}>
-                <EmptyLike width={16} height={16} />
+              <Button onClick={handleLikeClick} isPrimary={false}>
+                {liked ? (
+                  <FillLike width={16} height={16} />
+                ) : (
+                  <EmptyLike width={16} height={16} />
+                )}
               </Button>
               <span className="text-[#9A9A9A]">{likes}</span>
             </div>
             <div className="flex text-sm items-center">
-              <Button
-                onClick={() => handleDislikeClick(true)}
-                isPrimary={false}
-              >
-                <EmptyDislike width={16} height={16} />
+              <Button onClick={handleDislikeClick} isPrimary={false}>
+                {disliked ? (
+                  <FillDislike width={16} height={16} />
+                ) : (
+                  <EmptyDislike width={16} height={16} />
+                )}
               </Button>
               <span className="text-[#9A9A9A]">{dislikes}</span>
             </div>

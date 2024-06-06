@@ -4,6 +4,7 @@ import { useGetVideoId } from "../useGetVideoId";
 import { GET_COMMENT_BY_ID } from "../../gql/query";
 import { GetCommentsByVideoId } from "../query/useCommentById";
 import { sortOrderVar } from "../../contexts/sortingType";
+import { useState } from "react";
 
 interface LikeReplyResult {
   likeReply: {
@@ -20,10 +21,15 @@ interface UseLikeReplyProps {
 export const useLikeReply = ({ commentId, replyId }: UseLikeReplyProps) => {
   const { videoId } = useGetVideoId();
   const [likeReply, { data, error }] = useMutation<LikeReplyResult>(LIKE_REPLY);
+  const [liked, setLiked] = useState(
+    JSON.parse(localStorage.getItem(`liked-reply-${replyId}`) || "false")
+  );
 
   const sortingType = useReactiveVar(sortOrderVar);
 
-  const handleLikeReply = async (isIncrement: boolean) => {
+  const handleLikeReply = async () => {
+    const isIncrement = !liked;
+
     await likeReply({
       variables: { replyId, isIncrement },
       update: (cache, { data }) => {
@@ -43,7 +49,10 @@ export const useLikeReply = ({ commentId, replyId }: UseLikeReplyProps) => {
             const newReplyList = item.replies.map((replyItem) => {
               if (replyItem.id !== replyId) return replyItem;
 
-              return { ...replyItem, likes: replyItem.likes + 1 };
+              return {
+                ...replyItem,
+                likes: isIncrement ? replyItem.likes + 1 : replyItem.likes - 1,
+              };
             });
 
             return { ...item, replies: newReplyList };
@@ -58,7 +67,15 @@ export const useLikeReply = ({ commentId, replyId }: UseLikeReplyProps) => {
         );
       },
     });
+
+    if (isIncrement) {
+      localStorage.setItem(`liked-reply-${replyId}`, JSON.stringify(true));
+      setLiked(true);
+    } else {
+      localStorage.removeItem(`liked-reply-${replyId}`);
+      setLiked(false);
+    }
   };
 
-  return { handleLikeReply, data, error };
+  return { handleLikeReply, data, error, liked };
 };

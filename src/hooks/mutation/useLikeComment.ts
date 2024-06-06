@@ -4,6 +4,7 @@ import { useGetVideoId } from "../useGetVideoId";
 import { GET_COMMENT_BY_ID } from "../../gql/query";
 import { GetCommentsByVideoId } from "../query/useCommentById";
 import { sortOrderVar } from "../../contexts/sortingType";
+import { useState } from "react";
 
 interface LikeCommentResult {
   likeComment: {
@@ -16,10 +17,15 @@ export const useLikeComment = (commentId: number) => {
   const { videoId } = useGetVideoId();
   const [likeComment, { data, error }] =
     useMutation<LikeCommentResult>(LIKE_COMMENT);
+  const [liked, setLiked] = useState(
+    JSON.parse(localStorage.getItem(`liked-comment-${commentId}`) || "false")
+  );
 
   const sortingType = useReactiveVar(sortOrderVar);
 
-  const handleLikeComment = async (isIncrement: boolean) => {
+  const handleLikeComment = async () => {
+    const isIncrement = !liked;
+
     await likeComment({
       variables: { commentId, isIncrement },
       update: (cache, { data }) => {
@@ -36,7 +42,11 @@ export const useLikeComment = (commentId: number) => {
           (item) => {
             if (item.id !== commentId) return item;
 
-            return { ...item, likes: item.likes + 1 };
+            if (isIncrement) {
+              return { ...item, likes: item.likes + 1 };
+            } else {
+              return { ...item, likes: item.likes - 1 };
+            }
           }
         );
 
@@ -48,7 +58,15 @@ export const useLikeComment = (commentId: number) => {
         );
       },
     });
+
+    if (isIncrement) {
+      localStorage.setItem(`liked-comment-${commentId}`, JSON.stringify(true));
+      setLiked(true);
+    } else {
+      localStorage.removeItem(`liked-comment-${commentId}`);
+      setLiked(false);
+    }
   };
 
-  return { handleLikeComment, data, error };
+  return { liked, handleLikeComment, data, error };
 };

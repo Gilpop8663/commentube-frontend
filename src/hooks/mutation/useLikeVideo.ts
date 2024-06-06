@@ -3,6 +3,7 @@ import { LIKE_VIDEO } from "../../gql/mutation";
 import { useGetVideoId } from "../useGetVideoId";
 import { GetVideoDetailByIdResponse } from "../query/useVideoDetail";
 import { GET_VIDEO_DETAIL } from "../../gql/query";
+import { useState } from "react";
 
 interface LikeVideoResult {
   likeVideo: {
@@ -14,8 +15,13 @@ interface LikeVideoResult {
 export const useLikeVideo = () => {
   const { videoId } = useGetVideoId();
   const [likeVideo, { data, error }] = useMutation<LikeVideoResult>(LIKE_VIDEO);
+  const [liked, setLiked] = useState(
+    JSON.parse(localStorage.getItem(`liked-video-${videoId}`) || "false")
+  );
 
-  const handleLikeVideo = async (isIncrement: boolean) => {
+  const handleLikeVideo = async () => {
+    const isIncrement = !liked;
+
     await likeVideo({
       variables: { videoId, isIncrement },
       update: (cache, { data }) => {
@@ -31,7 +37,10 @@ export const useLikeVideo = () => {
 
         const video = existingVideo.getVideoDetailById;
 
-        const newVideo = { ...video, likes: video.likes + 1 };
+        const newVideo = {
+          ...video,
+          likes: isIncrement ? video.likes + 1 : video.likes - 1,
+        };
 
         cache.updateQuery(
           { query: GET_VIDEO_DETAIL, variables: { videoId } },
@@ -41,7 +50,15 @@ export const useLikeVideo = () => {
         );
       },
     });
+
+    if (isIncrement) {
+      localStorage.setItem(`liked-video-${videoId}`, JSON.stringify(true));
+      setLiked(true);
+    } else {
+      localStorage.removeItem(`liked-video-${videoId}`);
+      setLiked(false);
+    }
   };
 
-  return { handleLikeVideo, data, error };
+  return { handleLikeVideo, data, error, liked };
 };

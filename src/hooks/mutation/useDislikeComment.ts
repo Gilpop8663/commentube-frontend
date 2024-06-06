@@ -4,6 +4,7 @@ import { useGetVideoId } from "../useGetVideoId";
 import { GET_COMMENT_BY_ID } from "../../gql/query";
 import { GetCommentsByVideoId } from "../query/useCommentById";
 import { sortOrderVar } from "../../contexts/sortingType";
+import { useState } from "react";
 
 interface DislikeCommentResult {
   dislikeComment: {
@@ -16,10 +17,15 @@ export const useDislikeComment = (commentId: number) => {
   const { videoId } = useGetVideoId();
   const [dislikeComment, { data, error }] =
     useMutation<DislikeCommentResult>(DISLIKE_COMMENT);
+  const [disliked, setDisliked] = useState(
+    JSON.parse(localStorage.getItem(`disliked-comment-${commentId}`) || "false")
+  );
 
   const sortingType = useReactiveVar(sortOrderVar);
 
-  const handleDislikeComment = async (isIncrement: boolean) => {
+  const handleDislikeComment = async () => {
+    const isIncrement = !disliked;
+
     await dislikeComment({
       variables: { commentId, isIncrement },
       update: (cache, { data }) => {
@@ -36,7 +42,10 @@ export const useDislikeComment = (commentId: number) => {
           (item) => {
             if (item.id !== commentId) return item;
 
-            return { ...item, dislikes: item.dislikes + 1 };
+            return {
+              ...item,
+              dislikes: isIncrement ? item.dislikes + 1 : item.dislikes - 1,
+            };
           }
         );
 
@@ -48,7 +57,18 @@ export const useDislikeComment = (commentId: number) => {
         );
       },
     });
+
+    if (isIncrement) {
+      localStorage.setItem(
+        `disliked-comment-${commentId}`,
+        JSON.stringify(true)
+      );
+      setDisliked(true);
+    } else {
+      localStorage.removeItem(`disliked-comment-${commentId}`);
+      setDisliked(false);
+    }
   };
 
-  return { handleDislikeComment, data, error };
+  return { handleDislikeComment, data, error, disliked };
 };

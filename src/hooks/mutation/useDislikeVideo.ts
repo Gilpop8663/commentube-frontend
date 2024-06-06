@@ -3,6 +3,7 @@ import { DISLIKE_VIDEO } from "../../gql/mutation";
 import { useGetVideoId } from "../useGetVideoId";
 import { GetVideoDetailByIdResponse } from "../query/useVideoDetail";
 import { GET_VIDEO_DETAIL } from "../../gql/query";
+import { useState } from "react";
 
 interface DislikeVideoResult {
   dislikeVideo: {
@@ -15,8 +16,13 @@ export const useDislikeVideo = () => {
   const { videoId } = useGetVideoId();
   const [dislikeVideo, { data, error }] =
     useMutation<DislikeVideoResult>(DISLIKE_VIDEO);
+  const [disliked, setDisliked] = useState(
+    JSON.parse(localStorage.getItem(`disliked-video-${videoId}`) || "false")
+  );
 
-  const handleDislikeVideo = async (isIncrement: boolean) => {
+  const handleDislikeVideo = async () => {
+    const isIncrement = !disliked;
+
     await dislikeVideo({
       variables: { videoId, isIncrement },
       update: (cache, { data }) => {
@@ -32,7 +38,10 @@ export const useDislikeVideo = () => {
 
         const video = existingVideo.getVideoDetailById;
 
-        const newVideo = { ...video, dislikes: video.dislikes + 1 };
+        const newVideo = {
+          ...video,
+          dislikes: isIncrement ? video.dislikes + 1 : video.dislikes - 1,
+        };
 
         cache.updateQuery(
           { query: GET_VIDEO_DETAIL, variables: { videoId } },
@@ -42,7 +51,15 @@ export const useDislikeVideo = () => {
         );
       },
     });
+
+    if (isIncrement) {
+      localStorage.setItem(`disliked-video-${videoId}`, JSON.stringify(true));
+      setDisliked(true);
+    } else {
+      localStorage.removeItem(`disliked-video-${videoId}`);
+      setDisliked(false);
+    }
   };
 
-  return { handleDislikeVideo, data, error };
+  return { handleDislikeVideo, data, error, disliked };
 };
