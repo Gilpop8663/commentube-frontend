@@ -7,7 +7,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router/index.tsx";
 
 export const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql",
+  uri: process.env.DB_URL || "http://localhost:3000/graphql",
   cache: new InMemoryCache(),
 });
 
