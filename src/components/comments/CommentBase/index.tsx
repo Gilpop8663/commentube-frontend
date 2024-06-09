@@ -22,6 +22,7 @@ import { useDislikeReply } from "../../../hooks/mutation/useDislikeReply";
 import FillLike from "../../icons/FillLike";
 import FillDislike from "../../icons/FillDislike";
 import { PASSWORD_MAX_LENGTH } from "../../../validation/constants";
+import { timeAgo } from "../../../utils";
 
 interface CommentBaseProps {
   id: number;
@@ -173,7 +174,7 @@ export default function CommentBase({
               @{nickname}
             </span>
             <span className="text-[#9A9A9A] text-[12px]">
-              {createdAt} {isModified && "(수정됨)"}
+              {timeAgo(createdAt)} {isModified && "(수정됨)"}
             </span>
           </div>
           <div className="flex justify-between items-center">
