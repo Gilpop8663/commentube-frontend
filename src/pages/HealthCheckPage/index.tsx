@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import HealthCheckFetcher from "../../fetchers/HealthCheckFetcher";
 import ErrorBoundary from "../../components/ErrorBoundary";
 

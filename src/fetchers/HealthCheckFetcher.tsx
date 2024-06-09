@@ -1,4 +1,3 @@
-import React from "react";
 import { useHealthCheck } from "../hooks/query/useHealthCheck";
 
 export default function HealthCheckFetcher() {
