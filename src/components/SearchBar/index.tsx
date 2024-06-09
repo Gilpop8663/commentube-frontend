@@ -31,9 +31,6 @@ export default function SearchBar({
             type="text"
             required
           />
-          <div className="absolute -bottom-5 text-xs text-gray-500">
-            예시) https://www.youtube.com/watch?v=U_LlX4t0A9I
-          </div>
         </div>
       </form>
     </div>
