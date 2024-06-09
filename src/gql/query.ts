@@ -53,3 +53,11 @@ export const GET_VIDEO_DETAIL = gql`
     }
   }
 `;
+
+export const HEALTH_CHECK = gql`
+  query {
+    healthCheck {
+      ok
+    }
+  }
+`;
