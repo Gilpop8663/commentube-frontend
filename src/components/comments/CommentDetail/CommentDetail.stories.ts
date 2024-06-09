@@ -22,6 +22,5 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     commentData: MOCK_COMMENT_LIST,
-    sortingOption: "popular",
   },
 };

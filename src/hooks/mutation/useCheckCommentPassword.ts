@@ -23,7 +23,7 @@ export const useCheckCommentPassword = ({
   const handleCheckCommentPassword = async (password: string) => {
     const result = await checkCommentPassword({
       variables: { password, commentId },
-      update: (cache, { data }) => {
+      update: (__, { data }) => {
         if (!data?.checkCommentPassword.ok) return;
 
         editInputOpen();

@@ -12,7 +12,6 @@ interface CommentWritingOptionProps {
 
 export default function CommentWritingOption({
   inputOpen,
-  inputClose,
   handleWritingOption,
 }: CommentWritingOptionProps) {
   const { togglePopup, isOpen, popupRef, closePopup } =

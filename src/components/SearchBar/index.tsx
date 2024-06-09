@@ -5,7 +5,7 @@ import { UseFormInputResult } from "../../hooks/useInput";
 
 interface SearchBarProps {
   handleSearchSubmit: (e: FormEvent) => void;
-  search: UseFormInputResult;
+  search?: UseFormInputResult;
 }
 
 export default function SearchBar({

@@ -21,6 +21,7 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
+    id: MOCK_COMMENT_LIST[0].id,
     nickname: MOCK_COMMENT_LIST[0].nickname,
     likes: MOCK_COMMENT_LIST[0].likes,
     dislikes: MOCK_COMMENT_LIST[0].dislikes,
@@ -33,6 +34,7 @@ export const Primary: Story = {
 
 export const Modified: Story = {
   args: {
+    id: MOCK_COMMENT_LIST[0].id,
     nickname: MOCK_COMMENT_LIST[0].nickname,
     likes: MOCK_COMMENT_LIST[0].likes,
     dislikes: MOCK_COMMENT_LIST[0].dislikes,
@@ -45,6 +47,7 @@ export const Modified: Story = {
 
 export const Reply: Story = {
   args: {
+    id: MOCK_COMMENT_LIST[1].id,
     nickname: MOCK_COMMENT_LIST[1].nickname,
     likes: MOCK_COMMENT_LIST[1].likes,
     dislikes: MOCK_COMMENT_LIST[1].dislikes,

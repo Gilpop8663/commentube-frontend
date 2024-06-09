@@ -23,7 +23,7 @@ export const useCheckReplyPassword = ({
   const handleCheckReplyPassword = async (password: string) => {
     const result = await checkReplyPassword({
       variables: { password, replyId },
-      update: (cache, { data }) => {
+      update: (__, { data }) => {
         if (!data?.checkReplyPassword.ok) return;
 
         editInputOpen();
