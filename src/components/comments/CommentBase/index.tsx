@@ -21,6 +21,7 @@ import { useLikeReply } from "../../../hooks/mutation/useLikeReply";
 import { useDislikeReply } from "../../../hooks/mutation/useDislikeReply";
 import FillLike from "../../icons/FillLike";
 import FillDislike from "../../icons/FillDislike";
+import { PASSWORD_MAX_LENGTH } from "../../../validation/constants";
 
 interface CommentBaseProps {
   id: number;
@@ -102,7 +103,7 @@ export default function CommentBase({
   });
 
   const [option, setOption] = useState<"edit" | "delete" | null>(null);
-  const password = useFormInput("");
+  const password = useFormInput({ maxLength: PASSWORD_MAX_LENGTH });
   const isModified = createdAt !== updatedAt;
   const createReplyProps = useCreateReply(commentId);
 
@@ -124,25 +125,42 @@ export default function CommentBase({
     inputClose();
   };
 
-  const handleActionClick = () => {
+  const handleActionClick = async () => {
+    if (password.value.trim() === "") {
+      password.showErrorMessage("비밀번호를 입력해주세요");
+      return;
+    }
+
+    let isCorrectPassword: boolean | undefined = false;
+
     if (option === "edit") {
       if (isReply) {
-        handleCheckReplyPassword(password.value);
-      } else {
-        handleCheckCommentPassword(password.value);
-      }
+        const result = await handleCheckReplyPassword(password.value);
 
-      inputClose();
+        isCorrectPassword = result.data?.checkReplyPassword.ok;
+      } else {
+        const result = await handleCheckCommentPassword(password.value);
+
+        isCorrectPassword = result.data?.checkCommentPassword.ok;
+      }
     }
 
     if (option === "delete") {
       if (isReply) {
-        handleDeleteReply(password.value);
-      } else {
-        handleDeleteComment(password.value);
-      }
+        const result = await handleDeleteReply(password.value);
 
+        isCorrectPassword = result.data?.deleteReply.ok;
+      } else {
+        const result = await handleDeleteComment(password.value);
+
+        isCorrectPassword = result.data?.deleteComment.ok;
+      }
+    }
+
+    if (isCorrectPassword) {
       inputClose();
+    } else {
+      password.showErrorMessage("비밀번호가 맞지 않습니다.");
     }
   };
 
@@ -170,7 +188,13 @@ export default function CommentBase({
               />
               {IsPasswordInputOpen && (
                 <div className="absolute flex border p-1 bg-white w-fit space-x-1">
-                  <Input placeholder="비밀번호" type="password" {...password} />
+                  <Input
+                    required
+                    maxLength={PASSWORD_MAX_LENGTH}
+                    placeholder="비밀번호"
+                    type="password"
+                    {...password}
+                  />
                   <div className="w-14">
                     <Button onClick={handleActionClick} isPrimary>
                       확인

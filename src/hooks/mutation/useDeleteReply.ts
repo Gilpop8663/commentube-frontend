@@ -25,7 +25,7 @@ export const useDeleteReply = ({ commentId, replyId }: UseDeleteReplyProps) => {
   const sortingType = useReactiveVar(sortOrderVar);
 
   const handleDeleteReply = async (password: string) => {
-    await deleteReply({
+    const result = await deleteReply({
       variables: { input: { password }, replyId },
 
       update: (cache, { data }) => {
@@ -58,6 +58,8 @@ export const useDeleteReply = ({ commentId, replyId }: UseDeleteReplyProps) => {
         );
       },
     });
+
+    return result;
   };
 
   return { handleDeleteReply, data, error };

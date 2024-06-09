@@ -20,7 +20,7 @@ export const useDeleteComment = (commentId: number) => {
   const sortingType = useReactiveVar(sortOrderVar);
 
   const handleDeleteComment = async (password: string) => {
-    await deleteComment({
+    const result = await deleteComment({
       variables: { input: { password }, commentId },
 
       update: (cache, { data }) => {
@@ -45,6 +45,8 @@ export const useDeleteComment = (commentId: number) => {
         );
       },
     });
+
+    return result;
   };
 
   return { handleDeleteComment, data, error };

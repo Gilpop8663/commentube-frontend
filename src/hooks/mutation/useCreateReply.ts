@@ -8,6 +8,11 @@ import { Reply } from "../../types/comment";
 import { sortOrderVar } from "../../contexts/sortingType";
 import { useGetVideoId } from "../useGetVideoId";
 import useOpen from "../useOpen";
+import {
+  CONTENT_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH,
+  PASSWORD_MAX_LENGTH,
+} from "../../validation/constants";
 
 interface CreateReplyResult {
   createReply: {
@@ -32,9 +37,17 @@ export interface UseCreateReplyResult {
 export const useCreateReply = (commentId: number): UseCreateReplyResult => {
   const { isOpen, toggleOpen, close } = useOpen();
   const { videoId } = useGetVideoId();
-  const content = useFormInput();
-  const nickname = useFormInput(localStorage.getItem("nickname") || "");
-  const password = useFormInput(localStorage.getItem("password") || "");
+  const content = useFormInput({
+    maxLength: CONTENT_MAX_LENGTH,
+  });
+  const nickname = useFormInput({
+    initialValue: localStorage.getItem("nickname") || "",
+    maxLength: NICKNAME_MAX_LENGTH,
+  });
+  const password = useFormInput({
+    initialValue: localStorage.getItem("password") || "",
+    maxLength: PASSWORD_MAX_LENGTH,
+  });
   const sortingType = useReactiveVar(sortOrderVar);
 
   const [createReply, { data, error }] =

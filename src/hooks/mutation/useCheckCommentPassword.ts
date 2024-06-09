@@ -21,7 +21,7 @@ export const useCheckCommentPassword = ({
     useMutation<CheckCommentPasswordResult>(CHECK_COMMENT_PASSWORD);
 
   const handleCheckCommentPassword = async (password: string) => {
-    await checkCommentPassword({
+    const result = await checkCommentPassword({
       variables: { password, commentId },
       update: (cache, { data }) => {
         if (!data?.checkCommentPassword.ok) return;
@@ -29,6 +29,8 @@ export const useCheckCommentPassword = ({
         editInputOpen();
       },
     });
+
+    return result;
   };
 
   return { handleCheckCommentPassword, data, error };

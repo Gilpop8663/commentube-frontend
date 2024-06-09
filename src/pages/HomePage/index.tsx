@@ -3,12 +3,16 @@ import SearchBar from "../../components/SearchBar";
 import PopularVideoFetcher from "../../fetchers/PopularVideoFetcher";
 import { useFormInput } from "../../hooks/useInput";
 import { useCreateVideo } from "../../hooks/mutation/useCreateVideo";
+import { validateSearch } from "../../validation/search";
 
 export default function HomePage() {
-  const { handleCreateVideo, data, error } = useCreateVideo();
-  const search = useFormInput();
+  const { handleCreateVideo } = useCreateVideo();
+  const search = useFormInput("", validateSearch);
   const handleSearchSubmit = (event: FormEvent) => {
     event.preventDefault();
+    const isSearchValidate = search.validate();
+
+    if (!isSearchValidate) return;
 
     handleCreateVideo(search.value);
   };

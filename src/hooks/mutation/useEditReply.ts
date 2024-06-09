@@ -7,6 +7,7 @@ import { useGetVideoId } from "../useGetVideoId";
 import { UseFormInputResult, useFormInput } from "../useInput";
 import useOpen from "../useOpen";
 import { FormEvent } from "react";
+import { CONTENT_MAX_LENGTH } from "../../validation/constants";
 
 interface EditReplyResult {
   editReply: {
@@ -38,7 +39,10 @@ export const useEditReply = ({
 }: UseEditReplyProps): UseEditReplyResult => {
   const { isOpen, open, close } = useOpen();
   const { videoId } = useGetVideoId();
-  const content = useFormInput(initialCommentValue);
+  const content = useFormInput({
+    initialValue: initialCommentValue,
+    maxLength: CONTENT_MAX_LENGTH,
+  });
   const [editReply, { data, error }] = useMutation<EditReplyResult>(EDIT_REPLY);
 
   const sortingType = useReactiveVar(sortOrderVar);

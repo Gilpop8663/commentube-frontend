@@ -7,6 +7,11 @@ import { GetCommentsByVideoId } from "../query/useCommentById";
 import { Comment } from "../../types/comment";
 import { sortOrderVar } from "../../contexts/sortingType";
 import { useGetVideoId } from "../useGetVideoId";
+import {
+  CONTENT_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH,
+  PASSWORD_MAX_LENGTH,
+} from "../../validation/constants";
 
 interface CreateCommentResult {
   createComment: {
@@ -28,9 +33,15 @@ export interface UseCreateCommentResult {
 
 export const useCreateComment = (): UseCreateCommentResult => {
   const { videoId } = useGetVideoId();
-  const content = useFormInput();
-  const nickname = useFormInput(localStorage.getItem("nickname") || "");
-  const password = useFormInput(localStorage.getItem("password") || "");
+  const content = useFormInput({ maxLength: CONTENT_MAX_LENGTH });
+  const nickname = useFormInput({
+    initialValue: localStorage.getItem("nickname") || "",
+    maxLength: NICKNAME_MAX_LENGTH,
+  });
+  const password = useFormInput({
+    initialValue: localStorage.getItem("password") || "",
+    maxLength: PASSWORD_MAX_LENGTH,
+  });
   const sortingType = useReactiveVar(sortOrderVar);
 
   const [createComment, { data, error }] =

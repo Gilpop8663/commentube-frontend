@@ -29,6 +29,7 @@ export default function SearchBar({
             className="text-3xl font-base w-full p-4"
             placeholder="의견을 나누고 싶은 동영상 주소를 입력하세요"
             type="text"
+            required
           />
           <div className="absolute -bottom-5 text-xs text-gray-500">
             예시) https://www.youtube.com/watch?v=U_LlX4t0A9I

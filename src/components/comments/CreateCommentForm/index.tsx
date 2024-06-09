@@ -1,5 +1,10 @@
 import { UseCreateCommentResult } from "../../../hooks/mutation/useCreateComment";
 import { UseCreateReplyResult } from "../../../hooks/mutation/useCreateReply";
+import {
+  CONTENT_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH,
+  PASSWORD_MAX_LENGTH,
+} from "../../../validation/constants";
 import Button from "../../Button";
 import Input from "../../Input";
 import CommentInput from "../CommentInput";
@@ -41,6 +46,8 @@ export default function CreateCommentForm({
   return (
     <form onSubmit={handleSubmit}>
       <CommentInput
+        required
+        maxLength={CONTENT_MAX_LENGTH}
         type="text"
         placeholder={`${primaryWord} 추가...`}
         {...content}
@@ -48,8 +55,16 @@ export default function CreateCommentForm({
       />
       <div className="flex justify-between mt-3">
         <div className="flex space-x-2">
-          <Input placeholder="닉네임" type="text" {...nickname} />
           <Input
+            required
+            maxLength={NICKNAME_MAX_LENGTH}
+            placeholder="닉네임"
+            type="text"
+            {...nickname}
+          />
+          <Input
+            required
+            maxLength={PASSWORD_MAX_LENGTH}
             placeholder="비밀번호"
             type="password"
             autoComplete="cc-csc"

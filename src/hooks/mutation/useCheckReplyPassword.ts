@@ -21,7 +21,7 @@ export const useCheckReplyPassword = ({
     useMutation<CheckReplyPasswordResult>(CHECK_REPLY_PASSWORD);
 
   const handleCheckReplyPassword = async (password: string) => {
-    await checkReplyPassword({
+    const result = await checkReplyPassword({
       variables: { password, replyId },
       update: (cache, { data }) => {
         if (!data?.checkReplyPassword.ok) return;
@@ -29,6 +29,8 @@ export const useCheckReplyPassword = ({
         editInputOpen();
       },
     });
+
+    return result;
   };
 
   return { handleCheckReplyPassword, data, error };

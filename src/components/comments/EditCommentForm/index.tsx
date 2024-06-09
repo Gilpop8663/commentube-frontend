@@ -1,5 +1,6 @@
 import { UseEditCommentResult } from "../../../hooks/mutation/useEditComment";
 import { UseEditReplyResult } from "../../../hooks/mutation/useEditReply";
+import { CONTENT_MAX_LENGTH } from "../../../validation/constants";
 import Button from "../../Button";
 import CommentInput from "../CommentInput";
 
@@ -36,7 +37,9 @@ export default function EditCommentForm({
   return (
     <form onSubmit={(event) => handleSubmit(event, password)}>
       <CommentInput
+        required
         type="text"
+        maxLength={CONTENT_MAX_LENGTH}
         placeholder={`${primaryWord} 추가...`}
         {...content}
         autoFocus

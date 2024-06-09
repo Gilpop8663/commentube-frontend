@@ -7,6 +7,7 @@ import { useGetVideoId } from "../useGetVideoId";
 import { UseFormInputResult, useFormInput } from "../useInput";
 import useOpen from "../useOpen";
 import { FormEvent } from "react";
+import { CONTENT_MAX_LENGTH } from "../../validation/constants";
 
 interface EditCommentResult {
   editComment: {
@@ -36,7 +37,10 @@ export const useEditComment = ({
 }: UseEditCommentProps): UseEditCommentResult => {
   const { isOpen, open, close } = useOpen();
   const { videoId } = useGetVideoId();
-  const content = useFormInput(initialCommentValue);
+  const content = useFormInput({
+    initialValue: initialCommentValue,
+    maxLength: CONTENT_MAX_LENGTH,
+  });
   const [editComment, { data, error }] =
     useMutation<EditCommentResult>(EDIT_COMMENT);
 
