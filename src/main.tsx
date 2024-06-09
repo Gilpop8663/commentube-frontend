@@ -7,8 +7,11 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router/index.tsx";
 
 export const client = new ApolloClient({
-  uri: process.env.DB_URL || "http://localhost:3000/graphql",
+  uri: "https://commentube.onrender.com/graphql",
   cache: new InMemoryCache(),
+  headers: {
+    "apollo-require-preflight": "true",
+  },
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -5,6 +5,7 @@ import { useFormInput } from "../../hooks/useInput";
 import { useCreateVideo } from "../../hooks/mutation/useCreateVideo";
 import { validateSearch } from "../../validation/search";
 import Poster from "../../assets/poster.png";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 export default function HomePage() {
   const { handleCreateVideo } = useCreateVideo();
@@ -24,9 +25,11 @@ export default function HomePage() {
       </div>
       <div className="grid grid-cols-10 gap-2 row-span-12 h-full">
         <div className="col-span-4 overflow-scroll">
-          <Suspense fallback={"로딩중"}>
-            <PopularVideoFetcher />
-          </Suspense>
+          <ErrorBoundary fallback={<span>비디오를 불러오지 못했습니다.</span>}>
+            <Suspense fallback={"로딩중"}>
+              <PopularVideoFetcher />
+            </Suspense>
+          </ErrorBoundary>
         </div>
         <div className="bg-[#3858ff] w-full col-span-6  h-full overflow-hidden">
           <img
