@@ -11,7 +11,7 @@ export const useVideoDetail = () => {
   const { videoId } = useGetVideoId();
   const { data } = useSuspenseQuery<GetVideoDetailByIdResponse>(
     GET_VIDEO_DETAIL,
-    { variables: { videoId } }
+    { variables: { videoId }, fetchPolicy: "cache-and-network" }
   );
 
   return { data: data.getVideoDetailById };

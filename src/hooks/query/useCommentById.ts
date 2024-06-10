@@ -22,6 +22,7 @@ export const useCommentById = () => {
   const sortingType = useReactiveVar(sortOrderVar);
   const { data } = useSuspenseQuery<GetCommentsByVideoId>(GET_COMMENT_BY_ID, {
     variables: { videoId, sortingType },
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {

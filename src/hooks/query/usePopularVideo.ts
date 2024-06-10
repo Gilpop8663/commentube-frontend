@@ -7,7 +7,9 @@ interface GetAllVideoResponse {
 }
 
 export const usePopularVideo = () => {
-  const { data } = useSuspenseQuery<GetAllVideoResponse>(GET_ALL_VIDEOS);
+  const { data } = useSuspenseQuery<GetAllVideoResponse>(GET_ALL_VIDEOS, {
+    fetchPolicy: "no-cache",
+  });
 
   return { data: data.getAllVideos };
 };
